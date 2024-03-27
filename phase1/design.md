@@ -19,7 +19,7 @@ Reasons for the protocol to have blockchain:
 
 1. **public verification of Proofs of Agreement**: Blockchain allows the ZKP of proofs of agreement to be verified
 2. **smart Contracts are unstoppable and deterministic**: Once deployed, smart contracts execute exactly as programmed without any possibility of downtime, censorship, fraud, or third-party interference.
-3. **eryptographic guaranteed trust between two parties**: By anchoring the agreement in a blockchain, both parties can trust that the agreement cannot be altered retroactively without mutual consent. This trust is not based on the reputation or promises of either party but on the immutable and transparent nature of the blockchain, where all transactions and agreements are permanently recorded and verifiable.
+3. **cryptographic guaranteed trust between two parties**: By anchoring the agreement in a blockchain, both parties can trust that the agreement cannot be altered retroactively without mutual consent. This trust is not based on the reputation or promises of either party but on the immutable and transparent nature of the blockchain, where all transactions and agreements are permanently recorded and verifiable.
 4. **integration with oracles for real-world data**: Blockchain oracles can be used to securely feed real-world data into the blockchain to trigger agreement conditions encoded in smart contracts. This capability allows for dynamic agreements that can adapt to external conditions or events, enhancing the flexibility and applicability of the zk-agreement protocol to a wide range of use cases.
 
 ## Zero Knowledge Proofs
@@ -37,7 +37,7 @@ Reasons for the protocol to use Zero Knowledge Proofs:
 
 ## Public Informations
 
-possible public data:
+public data:
 
 - (could be private) identity of party A, **cloud service provider**
 - (could be private) identity of party B, **end users**
@@ -81,6 +81,7 @@ possible public inputs:
 - identity of party B
 - pre-image of public parts within service agreement
 - pre-image of the crypto protocol for signing the service agreemt
+- pre-image of the penalty policy
 
 ## Service Agreement Order Book
 
@@ -96,9 +97,11 @@ possible public inputs:
         "maker": "0x56eb0ad2dc746540fab5c02478b31e2aa9ddc38c", // party A
         "taker": "0x0000000000000000000000000000000000000000", //party B
         "makerServiceHash": "0xfd9664b2b06837d2a629299e2ff2eea0b8136d5719602f25c506dfe1917ec2c5",
-        "takerContainersHash": "0xfd9664b2b06837d2a629299e2ff2eea0b8136d5719602f25c506dfe1917ec2c5",
-        "takerAmount": "10000000",
-        "takerToken": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "takerContainersHash": "0x0000000000000000000000000000000000000000",
+        "agreementCommitmnet": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+        "penaltyCommitment": "c0034605ea413370d5ad022b8d2f7fe33461bf6d7e5f4ac78f02c27b793673c9",
+        "fullfilAmount": "10000000",
+        "fullfilToken": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
         "salt": "40584472803756371677282334946406041345967204972423156532532776379801646390127",
         "verifyingContract": "0xdef1c0ded9bec7f1a1670819833240f027b25eff",
         "expiry": "1614959239",
