@@ -51,6 +51,18 @@ possible public data:
 
 ## Circuits
 
+recursive snark architecture
+
+- using circom which is based on groth16
+
+### circuit components
+
+- top level order book circuit
+- sla circuit
+- penalty circuit
+
+### inputs
+
 possible private inputs:
 
 - private contents in terms of a service agreement
@@ -84,6 +96,7 @@ possible public inputs:
         "maker": "0x56eb0ad2dc746540fab5c02478b31e2aa9ddc38c", // party A
         "taker": "0x0000000000000000000000000000000000000000", //party B
         "makerServiceHash": "0xfd9664b2b06837d2a629299e2ff2eea0b8136d5719602f25c506dfe1917ec2c5",
+        "takerContainersHash": "0xfd9664b2b06837d2a629299e2ff2eea0b8136d5719602f25c506dfe1917ec2c5",
         "takerAmount": "10000000",
         "takerToken": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
         "salt": "40584472803756371677282334946406041345967204972423156532532776379801646390127",
