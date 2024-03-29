@@ -36,6 +36,31 @@ USR ->> BKN: submits the proof to smart contract
 
 ## SLA negotiation
 
+### Overview
+
+#### Parties Involved:
+
+- Cloud Service Provider (CSP):
+- User (USR)
+
+#### Service Description:
+
+The CSP agrees to provide hosting services for Docker containers within their cloud VM infrastructure.
+
+#### Service Scope:
+
+Number of Docker Containers: The CSP will host 5 Docker containers for the USR.
+Service Levels:
+
+1. Uptime Guarantee: The CSP guarantees an uptime of 99.5% for the hosted Docker containers.
+2. API Rate Limit: The CSP assures an API rate limit of 100,000 requests per day.
+
+#### Pricing:
+
+The service is priced at 20 USDT (United States Dollar Tether) per month.
+
+### sequence diagram
+
 ```mermaid
 sequenceDiagram
 
@@ -49,7 +74,6 @@ USR ->> CSP: I would like to host 5 docker containers in your cloud VM
 CSP ->> USR: I can guarnatee you 99.5% uptime and api rate limit 100000/day, pricing is 20 usdt/month
 USR ->> CSP: I agree
 CSP ->> USR: I also agree
-
 ```
 
 ## Penalty Clause
