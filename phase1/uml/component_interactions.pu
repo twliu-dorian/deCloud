@@ -1,0 +1,31 @@
+@startuml interaction
+
+autonumber
+
+participant Cloud_Service_Provider as CSP
+participant User as USR
+participant ZK_Circuit as ZKC
+participant Blockchain as BKN
+
+CSP -> CSP: generates keys
+USR -> USR: generates keys
+USR <--> CSP: negotiating service level agreements(SLAs)
+CSP -> CSP: signs the SLAs
+CSP -> USR: sends the SLAs to user
+USR -> USR: signs the SLAs
+USR -> ZKC: commits constraints of SLAa to the circuit
+ZKC -> ZKC: generates the SLAs proof
+ZKC -> USR: gets the SLAs proof
+USR <--> CSP: negotiating penalty clause(PC)
+CSP -> CSP: signs the PC
+CSP -> USR: sends the PC to user
+USR -> USR: signs the PC
+USR -> ZKC: commits constraints of PC to the circuit
+ZKC -> ZKC: generates the penalty clause proof
+ZKC -> USR: gets the penalty clause proof
+USR -> USR: aggregates the proofs and other private, public inputs into top level R1CS
+USR -> USR: commits the aggregated constraints to the circuit 
+USR -> BKN: submits the proof to smart contract
+
+@enduml
+

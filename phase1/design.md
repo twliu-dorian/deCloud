@@ -30,7 +30,7 @@ Reasons for the protocol to use Zero Knowledge Proofs:
 
 2. **reduces on chain data**: By compressing off-chain agreement data and code, ZKP minimizes the need for extensive on-chain storage.
 
-3. **enhances trust**: Through the use of third-party oracles to monitor the validity of both parties' behavior, ZKP enables trust in the agreement's enforcement without requiring the oracles to have direct access to the agreement's contents.
+3. **enhances trust**: Through the use of third-party oracles to monitor the validity of both parties' behavior, ZKP enables trust in the agreement's enforcement without requiring the oracles to have direct access to the contents of the agreement.
 4. **prevents violations**: ZKP provides a mechanism to detect and prevent one party from violating the agreement.
 
 5. **facilitates dispute resolution**: Through crypto protocol design, ZKP could allow for verification of claims related to the agreement without exposing its specifics to the adjudicating authority.
