@@ -7,10 +7,10 @@ sequenceDiagram
 
 autonumber
 
-participant Cloud_Service_Provider as CSP
-participant User as USR
-participant ZK_Circuit as ZKC
-participant Blockchain as BKN
+participant CSP as Cloud_Service_Provider
+participant USR as User
+participant ZKC as ZK_Circuit
+participant BKN as Blockchain
 
 CSP ->> CSP: generates keys
 USR ->> USR: generates keys
@@ -36,12 +36,13 @@ USR ->> BKN: submits the proof to smart contract
 
 ## SLA negotiation
 
-```mermaidjs
+```mermaid
 sequenceDiagram
+
 autonumber
 
-participant Cloud_Service_Provider as CSP
-participant User as USR
+participant CSP as Cloud_Service_Provider
+participant USR as User
 
 CSP ->> USR: I can provide a service of hosting docker containers in my cloud VM
 USR ->> CSP: I would like to host 5 docker containers in your cloud VM
@@ -79,11 +80,12 @@ The total penalty credited in any given month shall not exceed 50% of the monthl
 ### Sequence Diagram
 
 ```mermaid
+sequenceDiagram
 
 autonumber
 
-participant Cloud_Service_Provider as CSP
-participant User as USR
+participant CSP as Cloud_Service_Provider
+participant USR as User
 
 CSP ->> USR: provides the penalty clause
 USR ->> CSP: agrees with the penalty clause
