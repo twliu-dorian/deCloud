@@ -86,12 +86,11 @@ The Service Provider guarantees a monthly uptime of 99.5% and an API rate limit 
 
 In the event that the Service Provider fails to meet the guaranteed monthly uptime of 99.5% or the daily API rate limit of 100,000 requests, a penalty shall be imposed as compensation to the Client. This penalty will be calculated in a linear relation to the shortfall from the guaranteed service levels and the monthly service fee.
 
-### Uptime Penalty Calculation:
+### Penalty Calculation:
 
 #### For uptime below the guaranteed 99.5%, the penalty will be calculated as follows:
 
 For every 0.1% (or part thereof) below the guaranteed uptime level, a penalty of 2% of the monthly service fee (20 USDT) will be credited to the Client's next billing cycle.
-API Rate Limit Penalty Calculation:
 
 #### For API requests below the guaranteed limit of 100,000 requests per day, the penalty will be calculated as follows:
 
