@@ -5,13 +5,10 @@ autonumber
 participant Cloud_Service_Provider as CSP
 participant User as USR
 
-group service level agreement
-
 CSP -> USR: I can provide a service of hosting docker containers in my cloud VM
 USR -> CSP: I would like to host 5 docker containers in your cloud VM 
-CSP -> USR: I can guarnatee you 99.5% uptime and api rate limit 100000/day
-CSP -> USR: 
-
-group penalty agreement
+CSP -> USR: I can guarnatee you 99.5% uptime and api rate limit 100000/day, pricing is 20 usdt/month
+USR -> CSP: I agree
+CSP -> USR: I also agree
 
 @enduml

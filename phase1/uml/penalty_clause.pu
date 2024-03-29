@@ -1,0 +1,14 @@
+@startuml negotiating
+
+autonumber
+
+participant Cloud_Service_Provider as CSP
+participant User as USR
+
+CSP -> USR: provides the penalty clause
+USR -> CSP: agrees with the penalty clause
+CSP -> CSP: signs the penalty clause
+CSP -> USR: sends the signed penalty clause
+USR -> USR: signs the penalty clause
+
+@enduml
