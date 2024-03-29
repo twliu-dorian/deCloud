@@ -14,14 +14,14 @@ participant BKN as Blockchain
 
 CSP ->> CSP: generates keys
 USR ->> USR: generates keys
-USR <<-->> CSP: negotiating service level agreements(SLAs)
+USR --> CSP: negotiating service level agreements(SLAs)
 CSP ->> CSP: signs the SLAs
 CSP ->> USR: sends the SLAs to user
 USR ->> USR: signs the SLAs
 USR ->> ZKC: commits constraints of SLAs to the circuit
 ZKC ->> ZKC: generates the SLAs proof
 ZKC ->> USR: gets the SLAs proof
-USR <<-->> CSP: negotiating penalty clause(PC)
+USR --> CSP: negotiating penalty clause(PC)
 CSP ->> CSP: signs the PC
 CSP ->> USR: sends the PC to user
 USR ->> USR: signs the PC
