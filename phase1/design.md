@@ -37,7 +37,7 @@ Reasons for the protocol to use Zero Knowledge Proofs:
 
 ## Public Informations
 
-public data:
+### public data:
 
 - (could be private) identity of party A, **cloud service provider**
 - (could be private) identity of party B, **end users**
@@ -48,6 +48,136 @@ public data:
   - service level objectives
     - uptime percentage
     - response times
+
+## Operations
+
+### Generating public keys
+
+#### Key-pairs for `user` and `cloud service provider`
+
+Each client is responsible for generating and maintaining three long-term keypairs:
+
+- Encrypting key pair: `encPublicKey`, `encPrivateKey`
+
+  - usage: offline service agreement negotiation
+  - `encPublicKey`: an ECDH public key
+  - `encPrivateKey`: an ECDH private key
+
+- Off-chain Signing key pair: `offChainSigPublicKey`, `offChainsigPrivateKey`
+
+  - usage: offline service agreement signing
+  - `offChainSigPublicKey`: an P256 ecdsa public key
+  - `offChainsigPrivateKey`: an P256 ecdsa key
+
+- On-chain Signing key pair:
+  `onChainSigPublicKey`, `onChainSigPrivateKey`
+
+  - usage: on chain crypto wallet, used submitting transactions
+  - `offChainSigPublicKey`: an P256 ecdsa public key
+  - `offChainsigPrivateKey`: an P256 ecdsa key
+
+#### Key-pairs for `smart contract deployer` and `maintainer`
+
+- On-chain Signing key pair:
+  `onChainSigPublicKey`, `onChainSigPrivateKey`
+
+  - usage: on chain crypto wallet, used submitting transactions
+  - `offChainSigPublicKey`: an P256 ecdsa public key
+  - `offChainsigPrivateKey`: an P256 ecdsa key
+
+#### Key-pairs for `third-party data oracle`
+
+- On-chain Signing key pair:
+  `onChainSigPublicKey`, `onChainSigPrivateKey`
+
+  - usage: on chain crypto wallet, used submitting transactions
+  - `offChainSigPublicKey`: an P256 ecdsa public key
+  - `offChainsigPrivateKey`: an P256 ecdsa key
+
+### Negotiating Service Level Agreement
+
+To make it simple and easy to quantify for the v1 design, these are the inputs that are negotiable between the user and cloud service provider.
+
+- effective date:
+- expiration date:
+- uptime percentage:
+- availability percentage:
+- api rate limiting
+
+An example for the service level agreement:
+
+```json=
+{
+  "SLA": {
+    "serviceProvider": "XYZ Corporation",
+    "client": "ABC Company",
+    "effectiveDate": "2024-03-01", //negotiable
+    "expirationDate": "2025-02-28", //negotiable
+    "servicesProvided": {
+        "serviceName": "Cloud Hosting Service",
+        "description": "Providing secure and scalable cloud hosting solutions.",
+        "availability": "99.9%" // negotiable
+    },
+    "performanceMetrics": {
+      "uptime": "99.9%", //negotiable
+      "responseTime": "Less than 1 hour during business hours",
+      "resolutionTime": "Less than 72 hours for critical issues"
+    },
+    "apiRateLimit": {
+      "limit": "1000 requests per hour", //negotiable
+      "description": "Specifies the maximum number of API requests that a client can make in an hour. Exceeding this limit may result in temporary suspension of service access.",
+      "resetInterval": "Hourly",
+      "exceedingPenalties": "Temporary suspension of API access for 1 hour, notification sent to client's contact email",
+      "measurementMethod": "Requests are counted per access token issued to the client."
+    },
+    "responsibilities": {
+      "serviceProvider": [
+        "Maintain service uptime as per the agreement",
+        "Provide customer support as specified",
+        "Notify client of scheduled maintenance"
+      ],
+      "client": [
+        "Pay service fees as agreed",
+        "Use services according to the terms of service",
+        "Report issues in a timely manner"
+      ]
+    },
+    "revisionPolicy": {
+      "noticePeriod": "30 days",
+      "methodOfNotification": "Email"
+    }
+  }
+}
+```
+
+### Negotiating Penalty Clause
+
+To make it simple and easy to quantify for the v1 design, these are the penalty conditions that are negotiable between the user and cloud service provider.
+
+- Uptime
+- Availability
+- API rate limit
+
+An example for the service level agreement:
+
+```json=
+{
+  "penalties": [
+      {
+        "condition": "Uptime less than 99.9%",
+        "penalty": "Credit of 5% of monthly fee for each 0.1% below agreed uptime"
+      },
+      {
+        "condition": "Availability time less than 97%",
+        "penalty": "Credit of 1% of monthly fee for each hour above agreed availability time"
+      },
+      {
+        "condition": "API rate limit exceeded more than twice in a month",
+        "penalty": "Credit of 2% of monthly fee per additional violation beyond the second in a single month"
+      }
+    ],
+}
+```
 
 ## Circuits
 
