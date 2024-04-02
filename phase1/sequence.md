@@ -1,6 +1,20 @@
 # Sequence diagram
 
-## component interaction
+## Core Flow
+
+### Description
+
+This flow describes a process involving a user and a cloud service provider (CSP) negotiating service level agreements (SLAs) and penalty clauses (PC) within a blockchain context, utilizing Zero-Knowledge (ZK) circuits for proof generation. Here's a simplified explanation:
+
+Both the CSP and the user generate their keys.
+The user negotiates service level agreements (SLAs) with the CSP. Once agreed upon, both parties sign the SLAs.
+The CSP sends the signed SLAs to the user, who then commits the constraints of these SLAs to a ZK circuit. The ZK circuit generates a proof for the SLAs, which the user receives.
+Following the SLAs, the user and CSP negotiate a penalty clause (PC) for any breaches of the agreement. Both parties sign the PC, and the CSP sends it to the user.
+The user commits the constraints of the PC to the ZK circuit, which then generates a proof for the PC. The user receives this proof as well.
+The user aggregates these proofs along with other private and public inputs into a top-level Rank-1 Constraint System (R1CS). They commit the aggregated constraints to the circuit.
+Finally, the user submits the proof to a smart contract on the blockchain.
+
+### Sequence Diagram
 
 ```mermaid
 sequenceDiagram
@@ -31,7 +45,6 @@ ZKC ->> USR: gets the penalty clause proof
 USR ->> USR: aggregates the proofs and other private, public inputs into top level R1CS
 USR ->> USR: commits the aggregated constraints to the circuit
 USR ->> BKN: submits the proof to smart contract
-
 ```
 
 ## SLA negotiation
@@ -52,14 +65,15 @@ The CSP agrees to provide hosting services for Docker containers within their cl
 Number of Docker Containers: The CSP will host 5 Docker containers for the USR.
 Service Levels:
 
-1. Uptime Guarantee: The CSP guarantees an uptime of 99.5% for the hosted Docker containers.
-2. API Rate Limit: The CSP assures an API rate limit of 100,000 requests per day.
+1. Uptime percentage: The CSP guarantees an uptime of 99% for the hosted Docker containers.
+2. Available time percentage: The CSP guarantees an uptime of 99% for the hosted Docker containers.
+3. API rate limit: The CSP assures an API rate limit of 1000 requests hour.
 
 #### Pricing:
 
 The service is priced at 20 USDT (United States Dollar Tether) per month.
 
-### sequence diagram
+### Sequence Diagram
 
 ```mermaid
 sequenceDiagram
@@ -71,12 +85,12 @@ participant USR as User
 
 CSP ->> USR: I can provide a service of hosting docker containers in my cloud VM
 USR ->> CSP: I would like to host 5 docker containers in your cloud VM
-CSP ->> USR: I can guarnatee you 99.5% uptime and api rate limit 100000/day, pricing is 20 usdt/month
+CSP ->> USR: I can guarnatee you 99% uptime and api rate limit 1000/hour, pricing is 20 usdt/month
 USR ->> CSP: I agree
 CSP ->> USR: I also agree
 ```
 
-## Penalty Clause
+## Penalty Clause negotiation
 
 ### Service Commitments:
 

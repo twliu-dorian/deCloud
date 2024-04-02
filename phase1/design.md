@@ -98,11 +98,11 @@ Each client is responsible for generating and maintaining three long-term keypai
 
 To make it simple and easy to quantify for the v1 design, these are the inputs that are negotiable between the user and cloud service provider.
 
-- effective date:
-- expiration date:
-- uptime percentage:
-- availability percentage:
-- api rate limiting
+- `effective date`: The start day when a contract or rule begins to apply.
+- `expiration date`: The end day when a contract or rule stops being in effect.
+- `uptime percentage`: How often a service (like a website) is working properly. Higher numbers mean it hardly ever has problems.
+- `availability percentage`: Similar to uptime, it shows how often you can use a service, but it considers times when the service is purposely not available, like during scheduled maintenance.
+- `api rate limiting`: Rules that limit how many times you can ask for data from a service in a certain period, like 1000 times an hour, to prevent overload.
 
 An example for the service level agreement:
 
@@ -154,9 +154,15 @@ An example for the service level agreement:
 
 To make it simple and easy to quantify for the v1 design, these are the penalty conditions that are negotiable between the user and cloud service provider.
 
-- Uptime
-- Availability
-- API rate limit
+- uptime
+  - guaranteed uptime is same as the SLA
+  - penalty format: credit of x% of monthly fee for each y% below agreed uptime
+- availability
+  - guaranteed availability is same as the SLA
+  - penalty format: credit of x% of monthly fee for each hour above agreed availability time
+- api rate limiting
+  - guaranteed availability is same as the SLA
+  - penalty format: credit of x% of monthly fee per additional violation beyond the second in a single month
 
 An example for the service level agreement:
 
@@ -164,71 +170,69 @@ An example for the service level agreement:
 {
   "penalties": [
       {
-        "condition": "Uptime less than 99.9%",
-        "penalty": "Credit of 5% of monthly fee for each 0.1% below agreed uptime"
+        "condition": "uptime less than 99.9%",
+        "penalty": "credit of 5% of monthly fee for each 0.1% below agreed uptime"
       },
       {
-        "condition": "Availability time less than 97%",
-        "penalty": "Credit of 1% of monthly fee for each hour above agreed availability time"
+        "condition": "availability time less than 97%",
+        "penalty": "credit of 1% of monthly fee for each hour above agreed availability time"
       },
       {
-        "condition": "API rate limit exceeded more than twice in a month",
-        "penalty": "Credit of 2% of monthly fee per additional violation beyond the second in a single month"
+        "condition": "api rate limit exceeded more than twice in a month",
+        "penalty": "credit of 2% of monthly fee per additional violation beyond the second in a single month"
       }
     ],
 }
 ```
 
-## Circuits
+## ZK Circuits
 
-recursive snark architecture
+### inputs to ZK proof
 
-- using circom which is based on groth16
+#### private inputs:
 
-### circuit components
-
-- top level order book circuit
-- sla circuit
-- penalty circuit
-
-### inputs
-
-possible private inputs:
-
-- private contents in terms of a service agreement
-  - pricing information
-  - custom services (hard to quantify)
-  - performance metrics
-    - exact metrics, penalties, and bonuses related to the performance of specific services
-  - security protocols
-  - data privacy agreements (hard to quantify)
-  - dispute resolution and termination procedures (hard to quantify)
+- pricing information
+- private contents in terms of service agreement
+  - uptime percentage
+  - availability percentage
+  - api rate limiting
+- private contents in terms of penalty clause
 - service nullifier: differentiating both parties could set up multiple services, but these services are unique
+- service hash
+- container hash
 
-possible public inputs:
+#### public inputs:
 
-- identity of party A
-- identity of party B
-- pre-image of public parts within service agreement
-- pre-image of the crypto protocol for signing the service agreemt
-- pre-image of the penalty policy
+- identity of user
+- identity of cloud service provider
+- hash(public contents within service agreement)
+  - effective date
+  - expiration date
+- hash(public contents within service agreement)
+- metadata of the service agreement order book
+
+#### Contract check
+
+- `effective date < operation date < expiration date`: The date when the service or operation is happening (Operation Date) must be after the date the agreement starts (Effective Date) and before the date the agreement ends (Expiration Date).
+- `actual uptime percentage > negotiated uptime percentage`: The real amount of time the service is up and running properly (Actual Uptime Percentage) should be higher than what was promised or agreed upon in the contract (Negotiated Uptime Percentage).
+- `actual availability percentage > negotiated availability percentage`:The actual measure of how often the service is available for use (Actual Availability Percentage) needs to be greater than the level of availability agreed upon in the contract (Negotiated Availability Percentage).
+- `actual rate limit < negotiated rate limit`: The real limit on how many times the service can be used or accessed (Actual Rate Limit) should be less strict than what was set in the agreement (Negotiated Rate Limit).
+- other conditions: ...
 
 ## Service Agreement Order Book
+
+The order book is designed for the user to act as the taker, taking this order and paying the blockchain transaction fee.
 
 ```json=
 {
     "order": {
-        "signature": {
-            "signatureType": 3,
-            "r": "0xdbec3b59729d24549ba120d473ae6838bb38ea73a02837a776e2f395e8708094",
-            "s": "0x33fbecf9484a4c29bea206db655da78c9c9cd502707c71a15dff71841f55c310",
-            "v": 27
-        },
-        "maker": "0x56eb0ad2dc746540fab5c02478b31e2aa9ddc38c", // party A
-        "taker": "0x0000000000000000000000000000000000000000", //party B
-        "makerServiceHash": "0xfd9664b2b06837d2a629299e2ff2eea0b8136d5719602f25c506dfe1917ec2c5",
-        "takerContainersHash": "0x0000000000000000000000000000000000000000",
-        "agreementCommitmnet": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+        "cspSignature": "3045022100afb03175dbc5b1ac3638621bf4e652b3afa87f2c7e8b1d8f55eb58ec3af90bfb022068d8a585189785e9d9460d4a54098ebe7fdfe93a277660020ec0f277afe6e289",
+        "usrSignature": "3044022053e49c6ab37c5f52daa59d211e060b3aae34834fb44aa45f1bdd375972c6f80d022063a3151a7256d3c9885a276e0b78172874f037cc50a2b792621d8f872aa73a6d",
+        "maker": "0x56eb0ad2dc746540fab5c02478b31e2aa9ddc38c", // cloud service provider id
+        "taker": "0x27DE3fd75B0540DB22E41038ac692116e0dfea0B", // user id, 0 hash means anyone can fullfil
+        "makerServiceHash": "dab8bff7c90f990c8edc29dd455b85dca5615f3dc3c5e56c0dcd5c4478dd83c1",
+        "takerContainersHash": "3356b94b5b51ff487099ce4d684ed5d9613e0a76ff5f2acf3cb4d1fd41e47670",
+        "agreementCommitment": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
         "penaltyCommitment": "c0034605ea413370d5ad022b8d2f7fe33461bf6d7e5f4ac78f02c27b793673c9",
         "fullfilAmount": "10000000",
         "fullfilToken": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
@@ -245,7 +249,6 @@ possible public inputs:
 
 ## Next Steps
 
-1. design the crypto protocol for two parties to sign an agreement
-2. provide a circuit template
-3. provide a PoC code for service agreement
-4. Keep refactoring the problem and possible solutions
+1. provide a circuit template, smart contracts
+2. provide a PoC code for service agreement
+3. Keep refactoring the problem and possible solutions
