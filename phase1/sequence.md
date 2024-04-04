@@ -85,7 +85,7 @@ participant USR as User
 
 CSP ->> USR: I can provide a service of hosting docker containers in my cloud VM
 USR ->> CSP: I would like to host 5 docker containers in your cloud VM
-CSP ->> USR: I can guarnatee you 99% uptime and api rate limit 1000/hour, pricing is 20 usdt/month
+CSP ->> USR: I can guarnatee you 99.5% uptime and api rate limit 1000/hour, pricing is 20 usdt/month
 USR ->> CSP: I agree
 CSP ->> USR: I also agree
 ```
